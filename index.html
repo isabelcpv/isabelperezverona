@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dr. Isabel Cristina Pérez Verona</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:   #1B2A4A;
+    --navy2:  #243457;
+    --teal:   #2A7F7F;
+    --teal2:  #3a9898;
+    --gold:   #C9A84C;
+    --cream:  #F7F4EF;
+    --warm:   #EDE8E0;
+    --slate:  #4A5568;
+    --mid:    #718096;
+    --white:  #FFFFFF;
+    --text:   #2D3748;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ─────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 4rem;
+    height: 64px;
+    background: rgba(27,42,74,0.97);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(42,127,127,0.3);
+  }
+  .nav-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 400;
+    color: var(--white);
+    letter-spacing: 0.03em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--teal2); }
+
+  /* ── HERO ─────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle at 70% 30%, rgba(42,127,127,0.12) 0%, transparent 50%),
+      radial-gradient(circle at 20% 80%, rgba(201,168,76,0.07) 0%, transparent 40%);
+    pointer-events: none;
+  }
+  .hero-grid-lines {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(42,127,127,0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(42,127,127,0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 6rem 5rem;
+    position: relative; z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--teal2);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.2s;
+  }
+
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    font-weight: 300;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.4s;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--teal2);
+  }
+
+  .hero-title {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.55s;
+  }
+
+  .hero-divider {
+    width: 48px;
+    height: 1px;
+    background: var(--teal);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.65s;
+  }
+
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.35rem;
+    font-weight: 300;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.82);
+    max-width: 480px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.75s;
+  }
+
+  .hero-cta-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.9s;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    background: var(--teal);
+    color: var(--white);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid var(--teal);
+    transition: background 0.2s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--teal2); transform: translateY(-2px); }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    background: transparent;
+    color: rgba(255,255,255,0.75);
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.2);
+    transition: border-color 0.2s, color 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--teal2); color: var(--teal2); transform: translateY(-2px); }
+
+  .hero-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 8rem 5rem 6rem 2rem;
+    position: relative; z-index: 2;
+  }
+
+  .hero-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    opacity: 0;
+    animation: fadeLeft 0.8s ease forwards 1s;
+  }
+  .stat-item {
+    text-align: right;
+    border-right: 2px solid var(--teal);
+    padding-right: 1.5rem;
+  }
+  .stat-number {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--white);
+    line-height: 1;
+  }
+  .stat-number span { color: var(--teal2); }
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-top: 0.3rem;
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    color: rgba(255,255,255,0.3);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  .scroll-line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, rgba(42,127,127,0.8), transparent);
+  }
+
+  /* ── ABOUT ────────────────────────────────────────── */
+  .about {
+    background: var(--cream);
+    padding: 7rem 5rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1rem;
+  }
+  .about-left h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--navy);
+  }
+  .about-left h2 em { font-style: italic; color: var(--teal); }
+  .about-teal-bar {
+    width: 40px; height: 3px;
+    background: var(--teal);
+    margin-top: 1.5rem;
+  }
+  .about-right p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: var(--slate);
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+  }
+  .about-right p strong { font-weight: 500; color: var(--navy); }
+
+  .about-pills {
+    display: flex; flex-wrap: wrap; gap: 0.6rem;
+    margin-top: 2rem;
+  }
+  .pill {
+    padding: 0.4rem 1rem;
+    border: 1px solid rgba(42,127,127,0.4);
+    color: var(--teal);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+    text-transform: uppercase;
+    background: rgba(42,127,127,0.05);
+  }
+
+  /* ── EXPERIENCE ───────────────────────────────────── */
+  .experience {
+    background: var(--navy);
+    padding: 7rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .experience::before {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(42,127,127,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .experience .section-label { color: var(--teal2); }
+  .experience-header {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 4rem;
+  }
+  .experience-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--white);
+  }
+
+  .exp-item {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 3rem;
+    padding: 3rem 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    position: relative;
+  }
+  .exp-item:first-of-type { border-top: none; }
+
+  .exp-meta { }
+  .exp-dates {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--teal2);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+  .exp-company {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .exp-content {}
+  .exp-role {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 1.2rem;
+    line-height: 1.3;
+  }
+  .exp-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .exp-bullets li {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    padding-left: 1.2rem;
+    position: relative;
+  }
+  .exp-bullets li::before {
+    content: '▸';
+    position: absolute; left: 0;
+    color: var(--teal);
+    font-size: 0.7rem;
+    top: 0.15em;
+  }
+  .exp-tag-row {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    margin-top: 1.2rem;
+  }
+  .exp-tag {
+    padding: 0.25rem 0.75rem;
+    background: rgba(42,127,127,0.15);
+    border: 1px solid rgba(42,127,127,0.3);
+    color: var(--teal2);
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+    font-weight: 500;
+  }
+
+  /* ── PODCAST ──────────────────────────────────────── */
+  .podcast {
+    background: var(--warm);
+    padding: 7rem 5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .podcast-left {}
+  .podcast-left h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.8rem;
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--navy);
+    margin-bottom: 1.5rem;
+  }
+  .podcast-left h2 em { font-style: italic; color: var(--teal); }
+  .podcast-left p {
+    font-size: 0.95rem;
+    line-height: 1.85;
+    color: var(--slate);
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+  .podcast-right {
+    background: var(--navy);
+    padding: 3rem;
+    position: relative;
+  }
+  .podcast-right::before {
+    content: '☕';
+    position: absolute;
+    top: -1.2rem; left: 2rem;
+    font-size: 2.5rem;
+  }
+  .podcast-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 400;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .podcast-sub {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.05em;
+  }
+  .podcast-desc {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.65);
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+  .spotify-btn {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    padding: 0.7rem 1.5rem;
+    background: #1DB954;
+    color: var(--white);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .spotify-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+  .spotify-icon { font-size: 1rem; }
+
+  /* ── CREDENTIALS ──────────────────────────────────── */
+  .credentials {
+    background: var(--cream);
+    padding: 7rem 5rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+  .cred-block {}
+  .cred-block .section-label { margin-bottom: 1.5rem; }
+  .cred-item {
+    padding: 1.5rem 0;
+    border-top: 1px solid rgba(27,42,74,0.1);
+  }
+  .cred-title {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+  }
+  .cred-sub {
+    font-size: 0.78rem;
+    color: var(--mid);
+    font-weight: 300;
+    line-height: 1.5;
+  }
+  .cred-sub a {
+    color: var(--teal);
+    text-decoration: none;
+  }
+  .cred-sub a:hover { text-decoration: underline; }
+  .cred-award {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    background: rgba(201,168,76,0.12);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: #A07820;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-top: 0.4rem;
+  }
+
+  .lang-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+  }
+  .lang-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.55rem 1.1rem;
+    background: rgba(42,127,127,0.08);
+    border: 1px solid rgba(42,127,127,0.3);
+    border-radius: 999px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .lang-item:hover {
+    background: rgba(42,127,127,0.16);
+    border-color: var(--teal2);
+  }
+  .lang-name { font-size: 0.82rem; font-weight: 500; color: var(--navy); }
+  .lang-level { font-size: 0.62rem; color: var(--teal); font-family: 'DM Mono', monospace; letter-spacing: 0.05em; }
+
+  /* ── FOOTER ───────────────────────────────────────── */
+  footer {
+    background: var(--navy);
+    padding: 3rem 5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(42,127,127,0.3);
+  }
+  .footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    font-weight: 300;
+  }
+  .footer-links {
+    display: flex; gap: 2rem; list-style: none;
+  }
+  .footer-links a {
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--teal2); }
+  .footer-copy {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.25);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── ANIMATIONS ───────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeLeft {
+    from { opacity: 0; transform: translateX(24px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── RESPONSIVE ───────────────────────────────────── */
+  @media (max-width: 900px) {
+    nav { padding: 0 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 8rem 2rem 3rem; }
+    .hero-right { display: none; }
+    .about, .podcast { grid-template-columns: 1fr; padding: 4rem 2rem; gap: 2.5rem; }
+    .experience { padding: 4rem 2rem; }
+    .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+    .credentials { grid-template-columns: 1fr; padding: 4rem 2rem; }
+    footer { flex-direction: column; gap: 1.5rem; text-align: center; padding: 2.5rem 2rem; }
+    .footer-links { flex-wrap: wrap; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">Dr. Isabel C. Pérez Verona</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#podcast">Podcast</a></li>
+    <li><a href="#credentials">Credentials</a></li>
+    <li><a href="mailto:isabel.perezverona@gmail.com">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg-pattern"></div>
+  <div class="hero-grid-lines"></div>
+
+  <div class="hero-left">
+    <p class="hero-eyebrow">Munich · EMEA · Global</p>
+    <h1 class="hero-name">Dr. Isabel<br>Cristina<br><em>Pérez Verona</em></h1>
+    <p class="hero-title">Project Manager, Munich Re &nbsp;·&nbsp; AI &amp; Data Platform Leader</p>
+    <div class="hero-divider"></div>
+    <p class="hero-tagline">I build the bridges between bold ideas and working products — turning ambiguity into roadmaps, and teams into communities.</p>
+    <div class="hero-cta-row">
+      <a href="#experience" class="btn-primary">View Experience</a>
+      <a href="#podcast" class="btn-ghost">☕ Coffee with AI</a>
+      <a href="https://www.linkedin.com/in/isabelcpv/" target="_blank" class="btn-ghost">LinkedIn ↗</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-number">20<span>+</span></div>
+        <div class="stat-label">Person team built from zero</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">800<span>+</span></div>
+        <div class="stat-label">Underwriters across EMEA, US & Asia</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">15<span>yr</span></div>
+        <div class="stat-label">In AI, data &amp; complex systems</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-number">5<span></span></div>
+        <div class="stat-label">Languages spoken</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-left reveal">
+    <p class="section-label">About</p>
+    <h2>Where strategy<br>meets <em>science</em></h2>
+    <div class="about-teal-bar"></div>
+  </div>
+  <div class="about-right reveal">
+    <p>I am a <strong>PhD-trained technologist and delivery leader</strong> who has spent over 15 years at the intersection of machine learning, data systems, and people-first management. Today I lead complex data platform programmes at Munich Re, one of the world's largest reinsurers — driving decisions for hundreds of underwriters across three continents.</p>
+    <p>My superpower is <strong>translating deep technical complexity into clear outcomes</strong> — for engineers, for executives, and for the people in between. I've built teams from scratch, secured programme funding, negotiated enterprise contracts, and created cultures where diverse talent thrives.</p>
+    <p>I am a proud <strong>Latina in STEM</strong>, an advocate for diversity and inclusion in tech leadership, and a firm believer that the best ideas come from the most unexpected people — when you build the right environment for them.</p>
+    <div class="about-pills">
+      <span class="pill">AI &amp; Machine Learning</span>
+      <span class="pill">Data Platforms</span>
+      <span class="pill">Programme Delivery</span>
+      <span class="pill">Agile at Scale</span>
+      <span class="pill">Executive Stakeholder Management</span>
+      <span class="pill">Team Building</span>
+      <span class="pill">Diversity &amp; Inclusion</span>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+  <div class="experience-header reveal">
+    <div>
+      <p class="section-label">Career</p>
+      <h2>Experience</h2>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-meta">
+      <div class="exp-dates">09.2022 – Present</div>
+      <div class="exp-company">Munich Re</div>
+    </div>
+    <div class="exp-content">
+      <h3 class="exp-role">Project Manager — Head of Product &amp; Program, Data Analytics Platform</h3>
+      <ul class="exp-bullets">
+        <li>Conceived, secured funding for, and delivered an enterprise-grade geospatial analytics platform supporting underwriting decisions for ~800 users across EMEA, the US, and Asia.</li>
+        <li>Grew a delivery organisation from zero to 20 people in under 2.5 years — engineering, data, infrastructure, and QA sub-teams running synchronised Scrum ceremonies.</li>
+        <li>Primary executive interface between technical teams and C-level stakeholders; moderated steering committees and reported to financing and decision-making bodies.</li>
+        <li>Led architecture discussions to replace a legacy monolithic system with a modular reporting platform featuring enriched interactive map layers and dashboard analytics.</li>
+        <li>Designed workshops and events for 60–120 participants; delivered professional coaching to 60+ colleagues across multicultural, distributed teams.</li>
+        <li>Held full P&amp;L responsibility for team finances and all hiring decisions.</li>
+      </ul>
+      <div class="exp-tag-row">
+        <span class="exp-tag">Geospatial Analytics</span>
+        <span class="exp-tag">Agile / Scrum at Scale</span>
+        <span class="exp-tag">PMO Governance</span>
+        <span class="exp-tag">C-Level Reporting</span>
+        <span class="exp-tag">Team Building</span>
+        <span class="exp-tag">Regulated Environment</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-meta">
+      <div class="exp-dates">08.2020 – 05.2022</div>
+      <div class="exp-company">Smart Reporting</div>
+    </div>
+    <div class="exp-content">
+      <h3 class="exp-role">Interface &amp; Operations Manager — AI Speech Reporting</h3>
+      <ul class="exp-bullets">
+        <li>Managed enterprise integration projects for an AI-assisted speech reporting platform in regulated healthcare environments (RIS/PACS integration, release planning, change management).</li>
+        <li>Defined OKRs and performance tracking frameworks enabling continuous, data-driven delivery improvement across client-facing teams.</li>
+      </ul>
+      <div class="exp-tag-row">
+        <span class="exp-tag">AI-Assisted Reporting</span>
+        <span class="exp-tag">Healthcare Tech</span>
+        <span class="exp-tag">OKRs</span>
+        <span class="exp-tag">Client Delivery</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="exp-item reveal">
+    <div class="exp-meta">
+      <div class="exp-dates">Pre-2020</div>
+      <div class="exp-company">Academia &amp; IT</div>
+    </div>
+    <div class="exp-content">
+      <h3 class="exp-role">Various roles — Software Development, Risk Management, Research &amp; Lecturing</h3>
+      <ul class="exp-bullets">
+        <li>Over a decade of hands-on experience in machine learning, complex systems modelling, and data analysis, originating from PhD research and academic roles.</li>
+      </ul>
+      <div class="exp-tag-row">
+        <span class="exp-tag">Machine Learning</span>
+        <span class="exp-tag">Research</span>
+        <span class="exp-tag">Software Development</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PODCAST -->
+<section class="podcast" id="podcast">
+  <div class="podcast-left reveal">
+    <p class="section-label">Media</p>
+    <h2>Making AI<br>feel less like<br><em>science fiction</em></h2>
+    <p>Every week I sit down with my co-host to explore the world of artificial intelligence — breaking down complex topics, sharing practical insights, and making AI accessible to enthusiasts and professionals alike.</p>
+    <p>Whether you're a technologist, a business leader, or simply AI-curious — there's a seat for you at the table.</p>
+    <a href="https://open.spotify.com/show/7g9fBTA20V3ym02WMPHhHX" target="_blank" class="btn-primary">Listen on Spotify ↗</a>
+  </div>
+  <div class="podcast-right reveal">
+    <h3 class="podcast-title">Coffee with AI</h3>
+    <p class="podcast-sub">Weekly · Available on Spotify</p>
+    <p class="podcast-desc">A casual yet insightful conversation over a virtual cup of coffee — exploring the latest AI trends, demystifying the technology, and bridging the gap between research and real-world application.</p>
+    <a href="https://open.spotify.com/show/7g9fBTA20V3ym02WMPHhHX" target="_blank" class="spotify-btn">
+      <span class="spotify-icon">♫</span> Open in Spotify
+    </a>
+  </div>
+</section>
+
+<!-- CREDENTIALS -->
+<section class="credentials" id="credentials">
+  <!-- Education -->
+  <div class="cred-block reveal">
+    <p class="section-label">Education</p>
+    <div class="cred-item">
+      <div class="cred-title">PhD — Computer Science &amp; Systems Engineering</div>
+      <div class="cred-sub">IMT School for Advanced Studies Lucca<br>Focus: data analysis, machine learning, complex systems modelling</div>
+    </div>
+    <div class="cred-item">
+      <div class="cred-title">MSc in Computer Science <span style="color:var(--teal);font-size:0.75rem">Cum Laude</span></div>
+    </div>
+    <div class="cred-item">
+      <div class="cred-title">BSc in Computer Engineering <span style="color:var(--teal);font-size:0.75rem">Cum Laude</span></div>
+    </div>
+    <div class="cred-item">
+      <div class="cred-title">Certifications</div>
+      <div class="cred-sub">Project Management Professional (PMP)<br>Certified Scrum Master (CSM)</div>
+    </div>
+    <div class="cred-item">
+      <div class="cred-title">Soroptimist International of Europe Award</div>
+      <div class="cred-sub">Highest doctoral funding granted in Italy — 2020</div>
+      <span class="cred-award">Award</span>
+    </div>
+  </div>
+
+  <!-- Publications -->
+  <div class="cred-block reveal">
+    <p class="section-label">Research &amp; Publications</p>
+    <div class="cred-item">
+      <div class="cred-title">International Peer-Reviewed Publications</div>
+      <div class="cred-sub">
+        Various publications in the fields of data science and experimental economics.<br><br>
+        <a href="https://scholar.google.it/citations?user=yS1mhlAAAAAJ&hl=en" target="_blank">→ View on Google Scholar</a>
+      </div>
+    </div>
+    <div class="cred-item">
+      <div class="cred-title">Research Interests</div>
+      <div class="cred-sub">Machine learning · Complex systems modelling · Experimental economics · Data-driven decision making · Generative AI</div>
+    </div>
+  </div>
+
+  <!-- Languages -->
+  <div class="cred-block reveal">
+    <p class="section-label">Languages</p>
+    <div class="cred-item">
+      <div class="lang-grid">
+        <div class="lang-item"><span class="lang-name">Spanish</span><span class="lang-level">Native</span></div>
+        <div class="lang-item"><span class="lang-name">English</span><span class="lang-level">C2</span></div>
+        <div class="lang-item"><span class="lang-name">Italian</span><span class="lang-level">C2</span></div>
+        <div class="lang-item"><span class="lang-name">German</span><span class="lang-level">B2</span></div>
+        <div class="lang-item"><span class="lang-name">Japanese</span><span class="lang-level">Beginner</span></div>
+      </div>
+    </div>
+    <div class="cred-item" style="margin-top:1.5rem">
+      <div class="cred-title">Contact &amp; Links</div>
+      <div class="cred-sub" style="line-height:2">
+        <a href="mailto:isabel.perezverona@gmail.com">isabel.perezverona@gmail.com</a><br>
+        <a href="https://www.linkedin.com/in/isabelcpv/" target="_blank">LinkedIn ↗</a><br>
+        <a href="https://www.isabelperezverona.com/" target="_blank">isabelperezverona.com ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-name">Dr. Isabel Cristina Pérez Verona</div>
+  <ul class="footer-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#podcast">Podcast</a></li>
+    <li><a href="https://scholar.google.it/citations?user=yS1mhlAAAAAJ&hl=en" target="_blank">Scholar</a></li>
+    <li><a href="mailto:isabel.perezverona@gmail.com">Contact</a></li>
+  </ul>
+  <div class="footer-copy">Munich, Germany</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
