@@ -1,1 +1,928 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>The Architecture of Belonging | Dr. Isabel C. Pérez Verona</title>
+  <meta
+    name="description"
+    content="The Architecture of Belonging — a data-informed framework for bicultural identity, culture shock, language, and belonging by Dr. Isabel C. Pérez Verona."
+  >
+
+  <meta property="og:title" content="The Architecture of Belonging">
+  <meta
+    property="og:description"
+    content="The Data Science of Culture Shock — engineering belonging across cultures, languages, institutions, and identity."
+  >
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --navy: #1A3A5C;
+      --accent: #2563A8;
+      --mid: #6B7A8D;
+      --light: #F4F6F9;
+      --border: #DDE3EA;
+      --text: #1E2A38;
+      --white: #FFFFFF;
+      --soft-blue: #EDF3FA;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+      --max-width: 1200px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--sans);
+      color: var(--text);
+      background: var(--white);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    /* ── CURSOR ───────────────────────────────────── */
+    .cursor-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, opacity 0.3s;
+    }
+
+    .cursor-ring {
+      width: 32px;
+      height: 32px;
+      border: 1.5px solid var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.18s ease, width 0.2s, height 0.2s, opacity 0.3s;
+      opacity: 0.4;
+    }
+
+    body:hover .cursor-dot,
+    body:hover .cursor-ring {
+      opacity: 1;
+    }
+
+    @media (hover: none) {
+      .cursor-dot,
+      .cursor-ring {
+        display: none;
+      }
+    }
+
+    /* ── NAV ──────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.5rem, 4vw, 3rem);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+    }
+
+    .nav-name {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--navy);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
+    }
+
+    .nav-links a {
+      color: var(--mid);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      color: var(--navy);
+    }
+
+    .nav-cta {
+      background: var(--navy) !important;
+      color: var(--white) !important;
+      padding: 6px 16px;
+      border-radius: 2px;
+    }
+
+    .nav-cta:hover {
+      background: var(--accent) !important;
+    }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--navy);
+    }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      padding: 1.5rem 2rem;
+      flex-direction: column;
+      gap: 1.2rem;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      z-index: 999;
+    }
+
+    .mobile-menu a {
+      color: var(--text);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    /* ── PAGE ─────────────────────────────────────── */
+    .taob-container {
+      min-height: 100vh;
+      background: var(--white);
+    }
+
+    .taob-section-inner {
+      width: min(var(--max-width), calc(100% - 3rem));
+      margin: 0 auto;
+    }
+
+    /* ── HERO ─────────────────────────────────────── */
+    .taob-hero {
+      min-height: 82vh;
+      display: flex;
+      align-items: center;
+      padding: 120px clamp(1.5rem, 5vw, 5rem) 6rem;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 85% 18%, rgba(37, 99, 168, 0.10), transparent 34%),
+        linear-gradient(180deg, #FFFFFF 0%, #F8FAFD 100%);
+    }
+
+    .taob-hero::after {
+      content: "";
+      position: absolute;
+      right: -140px;
+      bottom: -230px;
+      width: 500px;
+      height: 500px;
+      border: 1px solid rgba(37, 99, 168, 0.11);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 70px rgba(37, 99, 168, 0.025),
+        0 0 0 140px rgba(37, 99, 168, 0.018);
+      pointer-events: none;
+    }
+
+    .taob-hero-inner {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .taob-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.5rem;
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .taob-badge::before {
+      content: "";
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .taob-title {
+      max-width: 900px;
+      margin-bottom: 1.7rem;
+      color: var(--navy);
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 8vw, 6.8rem);
+      font-weight: 300;
+      line-height: 0.98;
+      letter-spacing: -0.025em;
+    }
+
+    .taob-title em {
+      font-weight: 300;
+    }
+
+    .taob-subtitle {
+      max-width: 780px;
+      color: var(--text);
+      font-size: clamp(1.04rem, 1.5vw, 1.18rem);
+      line-height: 1.85;
+    }
+
+    .taob-subtitle strong {
+      color: var(--navy);
+      font-weight: 500;
+    }
+
+    .taob-scroll-cue {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 3rem;
+      color: var(--mid);
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .taob-scroll-cue::after {
+      content: "↓";
+      color: var(--accent);
+      font-size: 1rem;
+    }
+
+    /* ── MANIFESTO ────────────────────────────────── */
+    .taob-manifesto {
+      padding: 6.5rem clamp(1.5rem, 5vw, 5rem);
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .taob-quote-border {
+      width: min(930px, 100%);
+      margin: 0 auto;
+      padding-left: clamp(1.5rem, 4vw, 3rem);
+      border-left: 2px solid rgba(255, 255, 255, 0.28);
+    }
+
+    .taob-quote {
+      margin-bottom: 1.8rem;
+      color: rgba(255, 255, 255, 0.92);
+      font-family: var(--serif);
+      font-size: clamp(1.7rem, 3.5vw, 2.7rem);
+      font-weight: 300;
+      line-height: 1.35;
+    }
+
+    .taob-author {
+      color: rgba(255, 255, 255, 0.52);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ── PILLARS INTRO ────────────────────────────── */
+    .taob-pillars-section {
+      padding: 7rem clamp(1.5rem, 5vw, 5rem);
+      background: var(--light);
+    }
+
+    .taob-pillars-header {
+      max-width: 760px;
+      margin-bottom: 3.5rem;
+    }
+
+    .taob-kicker {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.8rem;
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    .taob-kicker::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .taob-pillars-header h2 {
+      margin-bottom: 0.8rem;
+      color: var(--navy);
+      font-family: var(--serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.08;
+    }
+
+    .taob-pillars-header p {
+      max-width: 720px;
+      color: var(--mid);
+      font-size: 1.02rem;
+      line-height: 1.8;
+    }
+
+    .taob-rule {
+      width: 36px;
+      height: 2px;
+      margin-top: 1.6rem;
+      background: var(--accent);
+    }
+
+    /* ── PILLAR GRID ──────────────────────────────── */
+    .taob-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      padding: 1px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .taob-card {
+      min-height: 100%;
+      padding: clamp(2rem, 4vw, 3rem);
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
+      transition: background 0.25s ease;
+    }
+
+    .taob-card:hover {
+      background: #F9FBFF;
+    }
+
+    .taob-card-num {
+      margin-bottom: 1.4rem;
+      color: #D8E1EC;
+      font-family: var(--serif);
+      font-size: 3.8rem;
+      font-weight: 300;
+      line-height: 1;
+      transition: color 0.25s;
+    }
+
+    .taob-card:hover .taob-card-num {
+      color: #C3D3E7;
+    }
+
+    .taob-card h3 {
+      max-width: 470px;
+      margin-bottom: 1.15rem;
+      color: var(--navy);
+      font-family: var(--serif);
+      font-size: clamp(1.55rem, 2.7vw, 2rem);
+      font-weight: 600;
+      line-height: 1.18;
+    }
+
+    .taob-premise {
+      margin-bottom: 1.6rem;
+      color: var(--text);
+      font-size: 0.98rem;
+      line-height: 1.8;
+    }
+
+    .taob-list {
+      list-style: none;
+      display: grid;
+      gap: 1rem;
+    }
+
+    .taob-list li {
+      position: relative;
+      padding-left: 1.15rem;
+      color: var(--mid);
+      font-size: 0.88rem;
+      line-height: 1.72;
+    }
+
+    .taob-list li::before {
+      content: "";
+      position: absolute;
+      top: 0.7em;
+      left: 0;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .taob-list strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ── CTA ──────────────────────────────────────── */
+    .taob-cta-section {
+      padding: 7rem clamp(1.5rem, 5vw, 5rem);
+      background: var(--white);
+    }
+
+    .taob-cta-box {
+      width: min(980px, 100%);
+      margin: 0 auto;
+      padding: clamp(2rem, 5vw, 4.5rem);
+      position: relative;
+      overflow: hidden;
+      background: var(--navy);
+      border-radius: 6px;
+      color: var(--white);
+    }
+
+    .taob-cta-box::before {
+      content: "";
+      position: absolute;
+      top: -120px;
+      right: -90px;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: rgba(37, 99, 168, 0.38);
+    }
+
+    .taob-cta-box::after {
+      content: "";
+      position: absolute;
+      bottom: -160px;
+      left: -80px;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.035);
+    }
+
+    .taob-cta-content {
+      max-width: 760px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .taob-cta-label {
+      margin-bottom: 1rem;
+      color: rgba(255, 255, 255, 0.46);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .taob-cta-box h3 {
+      margin-bottom: 1rem;
+      color: var(--white);
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4.5vw, 3.4rem);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+
+    .taob-cta-box p {
+      max-width: 700px;
+      margin-bottom: 2rem;
+      color: rgba(255, 255, 255, 0.68);
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .taob-cta-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .taob-btn,
+    .taob-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0.8rem 1.6rem;
+      border-radius: 2px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .taob-btn {
+      background: var(--white);
+      color: var(--navy);
+    }
+
+    .taob-btn:hover {
+      transform: translateY(-1px);
+      background: #F2F6FB;
+    }
+
+    .taob-btn-secondary {
+      color: var(--white);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
+
+    .taob-btn-secondary:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    /* ── FOOTER ───────────────────────────────────── */
+    footer {
+      padding: 2.2rem;
+      background: var(--navy);
+      color: rgba(255, 255, 255, 0.4);
+      text-align: center;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+    }
+
+    footer a {
+      color: rgba(255, 255, 255, 0.65);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: rgba(255, 255, 255, 0.95);
+    }
+
+    /* ── ANIMATIONS ───────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    .taob-badge,
+    .taob-title,
+    .taob-subtitle,
+    .taob-scroll-cue {
+      animation: heroFade 0.75s ease both;
+    }
+
+    .taob-badge { animation-delay: 0.05s; }
+    .taob-title { animation-delay: 0.13s; }
+    .taob-subtitle { animation-delay: 0.23s; }
+    .taob-scroll-cue { animation-delay: 0.34s; }
+
+    @keyframes heroFade {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────── */
+    @media (max-width: 900px) {
+      .taob-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .taob-hero {
+        min-height: auto;
+        padding-top: 110px;
+        padding-bottom: 4.5rem;
+      }
+
+      .taob-title {
+        font-size: clamp(3rem, 15vw, 4.4rem);
+      }
+
+      .taob-manifesto,
+      .taob-pillars-section,
+      .taob-cta-section {
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+      }
+
+      .taob-quote-border {
+        padding-left: 1.4rem;
+      }
+
+      .taob-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .taob-cta-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .taob-btn,
+      .taob-btn-secondary {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-name" href="/">Dr. Isabel C. Pérez Verona</a>
+
+    <div class="nav-links">
+      <a href="#framework">Framework</a>
+      <a href="#essay">Essay</a>
+      <a href="https://medium.com/@salsaanddauerkraut" target="_blank" rel="noopener noreferrer">Medium</a>
+      <a href="/" class="nav-cta">Main site</a>
+    </div>
+
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#framework" onclick="toggleMenu()">Framework</a>
+    <a href="#essay" onclick="toggleMenu()">Essay</a>
+    <a href="https://medium.com/@salsaanddauerkraut" target="_blank" rel="noopener noreferrer">Medium</a>
+    <a href="/" onclick="toggleMenu()">Main site</a>
+  </div>
+
+  <main id="taob" class="taob-container">
+
+    <!-- HERO -->
+    <section class="taob-hero">
+      <div class="taob-hero-inner">
+        <span class="taob-badge">THE ARCHITECTURE OF BELONGING</span>
+        <h1 class="taob-title">The Data Science of Culture Shock</h1>
+		<<h2>Why Raising Bicultural Kids is a Systems Design Problem</h2>
+        <p class="taob-subtitle">
+          Most people treat belonging as something given to them by a place, an institution, or a culture. But then, why does fitting in seem to come naturally to some, while for others it feels like an uphill battle?
+		  </p>
+		  <p class="taob-subtitle"><strong>Is there an explanation why the place you live — and plan to raise your family — just doesn’t feel right?</strong>
+		  That is the whole point behind this space: to understand what belonging really means across different dimensions, and implement a system that allows you to<strong> fit in without losing your identity.</strong>
+		  </p>
+		  <a href="#framework" class="taob-scroll-cue">Explore the framework</a>
+      </div>
+	  
+	  
+	 
+    </section>
+
+    <!-- FRAMEWORK -->
+    <section class="taob-pillars-section" id="framework">
+      <div class="taob-section-inner">
+
+        <header class="taob-pillars-header reveal">
+          <div class="taob-kicker">BELONGING</div>
+          <h2>What means <em>Belonging</em></h2>
+          <p>
+          That feeling of being an outsider may have a data-informed explanation — and that is why I believe belonging can be engineered. This matters especially for families raising children in a country different from the one they grew up in.
+			My mission is to uncover the patterns behind belonging and turn them into practical frameworks for designing lives and communities where people can thrive without losing their identity.
+          </p>
+          <div class="taob-rule"></div>
+        </header>
+
+        <div class="taob-grid">
+
+          <article class="taob-card reveal">
+            <div class="taob-card-num">01</div>
+            <h3>The Cultural Gap</h3>
+
+            <p class="taob-premise">
+              Culture shock and integration friction are not personal flaws or “bad parenting”—
+              they are measurable structural gaps between two opposing operating systems.
+            </p>
+          </article>
+
+          <article class="taob-card reveal reveal-delay-1">
+            <div class="taob-card-num">02</div>
+            <h3>Language as Emotional Sanctuary</h3>
+            <p class="taob-premise">
+             The benefits of speaking more than one language are widely known, but language can offer something deeper too: it can become an anchor for identity, belonging, and the feeling of home.
+            </p>
+          </article>
+
+          <article class="taob-card reveal">
+            <div class="taob-card-num">03</div>
+            <h3>Code-Switching</h3>
+
+            <p class="taob-premise">
+              Living with two (or more) identities and to know when to use which one without loosing yourself in the process. Fixing the feeling like an outsider in your own land.
+            </p>
+          </article>
+
+          <article class="taob-card reveal reveal-delay-1">
+            <div class="taob-card-num">04</div>
+            <h3>The search for Identity</h3>
+
+            <p class="taob-premise">
+              Belonging is not choosing a side or splitting oneself in half—
+              it is engineering an expanded, unified identity that combines both worlds.
+            </p>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="taob-cta-section" id="essay">
+      <div class="taob-cta-box reveal">
+        <div class="taob-cta-content">
+          <div class="taob-cta-label">Flagship Essay · 01</div>
+
+          <h3>The Data Science of Culture Shock:</h3>
+			<p>
+            <em>Why Raising Bicultural Kids is a Systems Design Problem.</em>
+          </p>
+
+          <div class="taob-cta-actions">
+            <a href="/articles/data-science-of-culture-shock.html" class="taob-btn">
+              Read the Article
+            </a>
+
+            <a
+              href="https://medium.com/@isabelperezverona"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="taob-btn-secondary"
+            >
+              Follow on Medium
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>
+      © 2026 Dr. Isabel C. Pérez Verona &nbsp;·&nbsp;
+      <a href="/">isabelperezverona.com</a>
+    </p>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+
+    let mx = 0;
+    let my = 0;
+    let rx = 0;
+    let ry = 0;
+
+    document.addEventListener('mousemove', (event) => {
+      mx = event.clientX;
+      my = event.clientY;
+
+      dot.style.left = mx + 'px';
+      dot.style.top = my + 'px';
+    });
+
+    (function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+
+      requestAnimationFrame(animateRing);
+    })();
+
+    document.querySelectorAll('a, button').forEach((element) => {
+      element.addEventListener('mouseenter', () => {
+        ring.style.width = '48px';
+        ring.style.height = '48px';
+        ring.style.opacity = '0.25';
+      });
+
+      element.addEventListener('mouseleave', () => {
+        ring.style.width = '32px';
+        ring.style.height = '32px';
+        ring.style.opacity = '0.4';
+      });
+    });
+
+    // Mobile menu
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+
+    // Scroll reveal
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    document.querySelectorAll('.reveal').forEach((element) => {
+      observer.observe(element);
+    });
+
+    // Nav shadow on scroll
+    window.addEventListener('scroll', () => {
+      document.querySelector('nav').style.boxShadow =
+        window.scrollY > 20
+          ? '0 1px 20px rgba(0,0,0,0.06)'
+          : 'none';
+    });
+  </script>
+</body>
+</html>
