@@ -712,21 +712,29 @@
   <div class="cursor-ring" id="cursorRing"></div>
 
   <!-- NAV -->
-  <nav>
-    <a class="nav-name" href="/">Dr. Isabel C. Pérez Verona</a>
+<nav>
+  <a class="nav-name" href="index.html">Dr. Isabel C. Pérez Verona</a>
 
-    <div class="nav-links">
-      <a href="#framework">Framework</a>
-      <a href="#essay">Where to Read</a>
-      <a href="/" class="nav-cta">Back to Main site</a>
-    </div>
+  <div class="nav-links">
+    <a href="index.html#about">About</a>
+    <a href="index.html#vision">Vision</a>
+    <a href="index.html#podcast">Podcast</a>
+    <a href="index.html#credentials">Credentials</a>
+    <a href="index.html#contact" class="nav-cta">Contact</a>
+  </div>
 
-    <div class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open navigation">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </nav>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#about" onclick="toggleMenu()">About</a>
+  <a href="index.html#vision" onclick="toggleMenu()">Vision</a>
+  <a href="index.html#podcast" onclick="toggleMenu()">Podcast</a>
+  <a href="index.html#credentials" onclick="toggleMenu()">Credentials</a>
+  <a href="index.html#contact" onclick="toggleMenu()">Contact</a>
+</div>
 
   <div class="mobile-menu" id="mobileMenu">
     <a href="#framework" onclick="toggleMenu()">Framework</a>
