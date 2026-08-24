@@ -304,6 +304,10 @@
       letter-spacing: 0.12em;
       text-decoration: none;
       text-transform: uppercase;
+	padding: 0.7rem 1.2rem;
+	border: 1px solid var(--border);
+	border-radius: 2px;
+	transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
     }
 
     .taob-scroll-cue::after {
@@ -576,6 +580,7 @@
     .taob-btn {
       background: var(--white);
       color: var(--navy);
+	  border: 1px solid var(--border);
     }
 
     .taob-btn:hover {
@@ -594,6 +599,95 @@
       background: rgba(255, 255, 255, 0.14);
       border-color: rgba(255, 255, 255, 0.35);
     }
+	
+	.taob-essay-inner {
+  width: min(980px, 100%);
+  margin: 0 auto;
+}
+
+.taob-essay-intro {
+  max-width: 680px;
+  margin: 1rem 0 3rem;
+  color: var(--mid);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.taob-essay-row {
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  gap: 2rem;
+  align-items: center;
+
+  padding: 2.4rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.taob-essay-row:last-child {
+  border-bottom: 1px solid var(--border);
+}
+
+.taob-essay-number {
+  color: #D8E1EC;
+  font-family: var(--serif);
+  font-size: 2.8rem;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.taob-essay-meta {
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.taob-essay-row h3 {
+  margin-bottom: 0.5rem;
+  color: var(--navy);
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.taob-essay-row p {
+  max-width: 620px;
+  color: var(--mid);
+  font-size: 0.92rem;
+  line-height: 1.65;
+}
+
+.taob-essay-link {
+  white-space: nowrap;
+  color: var(--navy);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.taob-essay-link:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 760px) {
+  .taob-essay-row {
+    grid-template-columns: 45px 1fr;
+    gap: 1rem;
+  }
+
+  .taob-essay-link {
+    grid-column: 2;
+    margin-top: 0.5rem;
+  }
+
+  .taob-essay-number {
+    font-size: 2rem;
+  }
+}
 
     /* ── FOOTER ───────────────────────────────────── */
     footer {
@@ -703,7 +797,8 @@
       .taob-btn-secondary {
         width: 100%;
       }
-    }
+    
+}
   </style>
 </head>
 
@@ -743,15 +838,20 @@
     <section class="taob-hero">
       <div class="taob-hero-inner">
         <span class="taob-badge">THE ARCHITECTURE OF BELONGING</span>
-        <h1 class="taob-title">The Data Science of Culture Shock</h1>
-		<<h2>Why Raising Bicultural Kids is a Systems Design Problem</h2>
+        <h1 class="taob-title">The Architecture of Belonging</h1>
         <p class="taob-subtitle">
           Most people treat belonging as something given to them by a place, an institution, or a culture. But then, why does fitting in seem to come naturally to some, while for others it feels like an uphill battle?
 		  </p>
+		  <br>
 		  <p class="taob-subtitle"><strong>Is there an explanation why the place you live — and plan to raise your family — just doesn’t feel right?</strong>
 		  That is the whole point behind this space: to understand what belonging really means across different dimensions, and implement a system that allows you to<strong> fit in without losing your identity.</strong>
 		  </p>
-		  <a href="#framework" class="taob-scroll-cue">Explore the framework</a>
+		  <a href="#framework" class="taob-scroll-cue"style="border-color: var(--accent); color: var(--accent);">
+		  Explore the framework
+		  </a>
+		  <a href="#articles" class="taob-scroll-cue" style="border-color: var(--accent); color: var(--accent);">
+		  Check the data
+		  </a>
       </div>
 	  
 	  
@@ -816,34 +916,74 @@
     </section>
 
     <!-- CTA -->
-    <section class="taob-cta-section" id="essay">
-      <div class="taob-cta-box reveal">
-        <div class="taob-cta-content">
-          <div class="taob-cta-label">Flagship Essay · 01</div>
+<section class="taob-cta-section" id="articles">
 
-          <h3>The Data Science of Culture Shock:</h3>
-			<p>
-            <em>Why Raising Bicultural Kids is a Systems Design Problem.</em>
-          </p>
+  <div class="taob-essay-inner">
 
-          <div class="taob-cta-actions">
-            <a href="/articles/the-data-science-of-culture-shock.html" class="taob-btn">
-              Read the Article
-            </a>
+    <div class="taob-kicker">DATA</div>
+	<h1 class="taob-title">Where Data Meets the Human Factor</h1>
+    <p class="taob-essay-intro">
+      Below, I explore the evidence behind the framework — the data, research, and patterns that make belonging tangible.
+    </p>
 
-            <a
-              href="https://thebelonginghub.substack.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="taob-btn-secondary"
-            >
-              Joing the Community
-            </a>
-          </div>
-        </div>
+
+    <!-- ARTICLE 01 -->
+    <article class="taob-essay-row">
+
+      <div class="taob-essay-number">
+        01
       </div>
-    </section>
 
+      <div class="taob-essay-row-content">
+        <div class="taob-essay-meta">Culture · Systems</div>
+
+        <h3>The Data Science of Culture Shock</h3>
+
+        <p>
+          Why raising bicultural kids is a systems design problem.
+        </p>
+      </div>
+
+      <a href="/articles/the-data-science-of-culture-shock.html"
+         class="taob-essay-link">
+        Read Article →
+      </a>
+
+    </article>
+
+
+    <!-- ARTICLE 02 -->
+    <article class="taob-essay-row">
+
+      <div class="taob-essay-number">
+        02
+      </div>
+
+      <div class="taob-essay-row-content">
+        <div class="taob-essay-meta">Data · Culture</div>
+
+        <h3>The Metrics of Cultural Disparity</h3>
+
+        <p>
+          Measuring the gap between the systems we carry and the ones we navigate.
+        </p>
+      </div>
+
+      <a href="/articles/the-metrics-of-cultural-disparity.html"
+         class="taob-essay-link">
+        Read Article →
+      </a>
+
+    </article>
+
+  </div>
+
+</section>
+
+
+
+
+</section>	   
   </main>
 
   <footer>
